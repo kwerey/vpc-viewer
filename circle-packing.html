@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>d3.js experiment | visualise AWS VPCs</title>
+    <script type="text/javascript" src="d3/d3.v4.min.js">
+    </script>
+
+  <style type="text/css">
+
+  #canvas {
+      display: block;
+      margin: auto;
+      width: 80%;
+      height: 60%;
+      min-height: 500px;
+      border-style: groove;
+      border-color: #b7c0ce;
+      background-color: #EDEFF2;
+  }
+
+  .title {
+    text-align: center;
+    font-family: Verdana, Geneva, sans-serif
+  }
+
+  .vpc {
+    display: inline-block;
+    margin: 20px;
+    width: 140px;
+    height: 140px;
+    padding: 40px;
+    background-color: #b7c0ce;
+    text-align: center;
+    font-family: Verdana, Geneva, sans-serif
+  }
+      
+  rect {
+    fill: rgb(31, 119, 180);
+    fill-opacity: .25;
+    stroke: rgb(31, 119, 180);
+    stroke-width: 1px;
+  }
+
+  text {
+    font: 10px sans-serif;
+    text-anchor: middle;
+  }
+
+</style>
+    </head>
+  
+    <body>
+    <h1 class="title">VPC visualiser!</h1> 
+    <svg id="canvas" width="960" height="960"></svg>
+    
+    <!-- turns the JSON aws cli gives into a hierarchy d3 can use. -->
+    <script type="text/javascript" src="hierarchise.js"></script>
+
+    <script>
+
+  // this is a (crappy) attempt to build visuals like these: 
+  // static circle packing http://bl.ocks.org/mbostock/7607535
+  // zoomable circle packing http://bl.ocks.org/mbostock/7607535
+
+  // bonus marks if I can get useful topology stuff rigged up between them.
+
+    var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
+
+    var format = d3.format(",d");
+
+    var color = d3.scaleSequential(d3.interpolateMagma)
+        .domain([-4, 4]);
+
+    var pack = d3.pack()
+        .size([width - 2, height - 2])
+        .padding(3);
+
+    var svg = d3.select("svg"),
+        diameter = +svg.attr("width"),
+        g = svg.append("g")
+          .attr("transform", "translate(2,2)"),
+        format = d3.format(",d");
+
+    var margin = 20;
+
+    // reads in the hierarchy the script above made.
+    vpcData = d3.hierarchy(tree)
+      .sum(function(d) { return d.size })
+      .sort(function(a, b) { return b.value - a.value; });
+
+    var node = g.selectAll(".node")
+      .data(pack(vpcData).descendants())
+      .enter() // d3 magic ensures an svg group exists for vpcData node. 
+      .append("g")
+        .attr("class", function(d) { return d.children ? "node" : "leaf node"; })
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; }); // I'm still not clear on where d.x and d.y come from
+
+    node.append("title")
+        .text(function(d) { return d.data.name });
+
+    node.append("circle")
+        .attr("r", function(d) { return d.value });
+
+    node.filter(function(d) { return !d.children; }).append("text")
+        .attr("dy", "0.3em")
+        .text(function(d) { return  });
+
+    var text = g.selectAll("text")
+      .data(node)
+      .enter().append("text")
+        .attr("class", "label")
+        .style("fill-opacity", function(d) { return d.parent === vpcData ? 1 : 0; })
+        .style("display", function(d) { return d.parent === vpcData ? "inline" : "none"; })
+        .text(function(d) { return d.data.name; });
+
+  var node = g.selectAll("circle,text");
+
+    svg
+        .style("background", color(-1))
+        .on("click", function() { zoom(vpcData); });
+
+    zoomTo([vpcData.x, vpcData.y, vpcData.r * 2 + margin]);
+
+    function zoom(d) {
+      var focus0 = focus; focus = d;
+
+      var transition = d3.transition()
+          .duration(d3.event.altKey ? 7500 : 750)
+          .tween("zoom", function(d) {
+            var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
+            return function(t) { zoomTo(i(t)); };
+          });
+
+      transition.selectAll("text")
+        .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
+          .style("fill-opacity", function(d) { return d.parent === focus ? 1 : 0; })
+          .on("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
+          .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
+    }
+
+    function zoomTo(v) {
+      var k = diameter / v[2]; view = v;
+      node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
+      circle.attr("r", function(d) { return d.r * k; });
+    }
+
+    </script>
+    </body>
+</html>    
