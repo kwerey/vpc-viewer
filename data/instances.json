@@ -1,0 +1,116 @@
+[
+    {
+        "Groups": [],
+        "OwnerId": "404232171294",
+        "Instances": [
+            {
+                "InstanceType": "t2.small",
+                "SourceDestCheck": true,
+                "Architecture": "x86_64",
+                "Tags": [
+                    {
+                        "Key": "role",
+                        "Value": "minecraft"
+                    }
+                ],
+                "Hypervisor": "xen",
+                "VirtualizationType": "hvm",
+                "SubnetId": "subnet-3a66954c",
+                "PublicDnsName": "ec2-52-31-126-201.eu-west-1.compute.amazonaws.com",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/xvda",
+                        "Ebs": {
+                            "AttachTime": "2016-04-16T22:54:38.000Z",
+                            "Status": "attached",
+                            "VolumeId": "vol-4748d9b5",
+                            "DeleteOnTermination": true
+                        }
+                    }
+                ],
+                "ProductCodes": [],
+                "SecurityGroups": [
+                    {
+                        "GroupName": "minecraft",
+                        "GroupId": "sg-ab20ddcc"
+                    }
+                ],
+                "ImageId": "ami-31328842",
+                "PrivateDnsName": "ip-172-31-18-25.eu-west-1.compute.internal",
+                "RootDeviceType": "ebs",
+                "AmiLaunchIndex": 0,
+                "LaunchTime": "2016-07-04T20:40:06.000Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "OwnerId": "404232171294",
+                        "Association": {
+                            "IpOwnerId": "404232171294",
+                            "PublicDnsName": "ec2-52-31-126-201.eu-west-1.compute.amazonaws.com",
+                            "PublicIp": "52.31.126.201"
+                        },
+                        "SourceDestCheck": true,
+                        "Description": "",
+                        "VpcId": "vpc-67ff1c03",
+                        "Groups": [
+                            {
+                                "GroupName": "minecraft",
+                                "GroupId": "sg-ab20ddcc"
+                            }
+                        ],
+                        "SubnetId": "subnet-3a66954c",
+                        "MacAddress": "06:39:40:63:9c:4f",
+                        "NetworkInterfaceId": "eni-17cf285d",
+                        "PrivateDnsName": "ip-172-31-18-25.eu-west-1.compute.internal",
+                        "PrivateIpAddresses": [
+                            {
+                                "PrivateIpAddress": "172.31.18.25",
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-18-25.eu-west-1.compute.internal",
+                                "Association": {
+                                    "IpOwnerId": "404232171294",
+                                    "PublicDnsName": "ec2-52-31-126-201.eu-west-1.compute.amazonaws.com",
+                                    "PublicIp": "52.31.126.201"
+                                }
+                            }
+                        ],
+                        "Attachment": {
+                            "AttachTime": "2016-04-16T22:54:38.000Z",
+                            "DeviceIndex": 0,
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "AttachmentId": "eni-attach-6b1835a9"
+                        },
+                        "PrivateIpAddress": "172.31.18.25",
+                        "Status": "in-use"
+                    }
+                ],
+                "VpcId": "vpc-67ff1c03",
+                "State": {
+                    "Name": "stopped",
+                    "Code": 80
+                },
+                "PrivateIpAddress": "172.31.18.25",
+                "EbsOptimized": false,
+                "Placement": {
+                    "GroupName": "",
+                    "Tenancy": "default",
+                    "AvailabilityZone": "eu-west-1b"
+                },
+                "StateTransitionReason": "User initiated (2016-07-04 21:55:03 GMT)",
+                "StateReason": {
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown",
+                    "Code": "Client.UserInitiatedShutdown"
+                },
+                "PublicIpAddress": "52.31.126.201",
+                "KeyName": "minecraft",
+                "InstanceId": "i-443cafce",
+                "ClientToken": "MfvjL1460847277587",
+                "RootDeviceName": "/dev/xvda"
+            }
+        ],
+        "ReservationId": "r-e7d5965e"
+    }
+]

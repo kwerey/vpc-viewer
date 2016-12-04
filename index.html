@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<script type="text/javascript" src="d3/d3.v4.min.js">
+  	</script>
+    <script type="text/javascript">
+
+        /* creates example bits of data 
+        var dataset = [];                        //Initialize empty array
+        for (var i = 0; i < (10 + Math.round(Math.random() * 50)); i++) {           //Loop 25 times
+            var newNumber = Math.random() * 30;  //New random number (0-30)
+            dataset.push(newNumber);             //Add new number to array
+        }
+
+        d3.select("body").selectAll("div")
+        .data(dataset)
+        .enter()
+        .append("div")
+        .attr("class", "bar")
+        .style("height", function(d) {
+            var barHeight = d * 5;  //Scale up by factor of 5
+            return barHeight + "px";
+        });
+
+        we'll switch this off while we test things. */
+        
+        var nodes = []
+        // vpcs.json should contain the output of `aws ec2 describe-vpcs`.
+        d3.json("data/vpcs.json", function(data) {
+          console.log(data.Vpcs); // check we can see the elements in the thing
+          for (vpc of data.Vpcs) {
+            console.log(vpc);
+            nodes.push(vpc);
+          }
+        });
+
+        console.log(nodes);
+
+    </script>
+
+	<style type="text/css">
+
+/*  div.bar {
+      display: inline-block;
+      width: 20px;
+      height: 75px;
+      background-color: teal;
+      margin-right: 2px;
+  }*/
+
+	#canvas {
+	    display: block;
+      margin: auto;
+	    width: 80%;
+	    height: 60%;
+      min-height: 500px;
+      border-style: groove;
+      border-color: #b7c0ce;
+      background-color: #EDEFF2;
+	}
+
+  .title {
+    text-align: center;
+    font-family: Verdana, Geneva, sans-serif
+  }
+	    
+	</style>
+    </head>
+    <body>
+    <h1 class="title">VPC visualiser!</h1> 
+    <div id="canvas">
+      <!-- this gets populated by the magic of d3! -->
+    </div> 
+    </body>
+</html>    

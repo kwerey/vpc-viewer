@@ -1,0 +1,26 @@
+{
+    "Vpcs": [
+        {
+            "VpcId": "vpc-a01106c2",
+            "InstanceTenancy": "default",
+            "Tags": [
+                {
+                    "Value": "MyVPC",
+                    "Key": "Name"
+                }
+            ],
+            "State": "available",
+            "DhcpOptionsId": "dopt-7a8b9c2d",
+            "CidrBlock": "10.0.0.0/16",
+            "IsDefault": false
+        },
+        {
+            "VpcId": "vpc-b61106d4",
+            "InstanceTenancy": "dedicated",
+            "State": "available",
+            "DhcpOptionsId": "dopt-97eb5efa",
+            "CidrBlock": "10.50.0.0/16",
+            "IsDefault": false
+        }
+    ]
+}
