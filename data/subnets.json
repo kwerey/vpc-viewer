@@ -1,36 +1,66 @@
-// this file should be the output of `aws ec2 describe-subnets`
-
 {
     "Subnets": [
         {
-            "CidrBlock": "172.31.0.0/20",
+            "DefaultForAz": true,
+            "AvailableIpAddressCount": 4091,
+            "VpcId": "vpc-67ff1c03",
             "AvailabilityZone": "eu-west-1a",
+            "MapPublicIpOnLaunch": true,
+            "State": "available",
             "SubnetId": "subnet-c08a40a4",
-            "DefaultForAz": true,
-            "VpcId": "vpc-67ff1c03",
-            "AvailableIpAddressCount": 4091,
-            "State": "available",
-            "MapPublicIpOnLaunch": true
+            "CidrBlock": "172.31.0.0/20"
         },
         {
-            "CidrBlock": "172.31.32.0/20",
+            "DefaultForAz": false,
+            "AvailableIpAddressCount": 251,
+            "VpcId": "vpc-78aee21c",
+            "Tags": [
+                {
+                    "Value": "private-subnet-1",
+                    "Key": "Name"
+                }
+            ],
+            "AvailabilityZone": "eu-west-1a",
+            "MapPublicIpOnLaunch": false,
+            "State": "available",
+            "SubnetId": "subnet-41401a25",
+            "CidrBlock": "10.0.0.0/24"
+        },
+        {
+            "DefaultForAz": true,
+            "AvailableIpAddressCount": 4091,
+            "VpcId": "vpc-67ff1c03",
             "AvailabilityZone": "eu-west-1c",
-            "SubnetId": "subnet-986e65c1",
-            "DefaultForAz": true,
-            "VpcId": "vpc-67ff1c03",
-            "AvailableIpAddressCount": 4091,
+            "MapPublicIpOnLaunch": true,
             "State": "available",
-            "MapPublicIpOnLaunch": true
+            "SubnetId": "subnet-986e65c1",
+            "CidrBlock": "172.31.32.0/20"
         },
         {
-            "CidrBlock": "172.31.16.0/20",
-            "AvailabilityZone": "eu-west-1b",
-            "SubnetId": "subnet-3a66954c",
             "DefaultForAz": true,
-            "VpcId": "vpc-67ff1c03",
             "AvailableIpAddressCount": 4090,
+            "VpcId": "vpc-67ff1c03",
+            "AvailabilityZone": "eu-west-1b",
+            "MapPublicIpOnLaunch": true,
             "State": "available",
-            "MapPublicIpOnLaunch": true
+            "SubnetId": "subnet-3a66954c",
+            "CidrBlock": "172.31.16.0/20"
+        },
+        {
+            "DefaultForAz": false,
+            "AvailableIpAddressCount": 250,
+            "VpcId": "vpc-78aee21c",
+            "Tags": [
+                {
+                    "Value": "public-subnet-1",
+                    "Key": "Name"
+                }
+            ],
+            "AvailabilityZone": "eu-west-1a",
+            "MapPublicIpOnLaunch": false,
+            "State": "available",
+            "SubnetId": "subnet-42401a26",
+            "CidrBlock": "10.0.1.0/24"
         }
     ]
 }
