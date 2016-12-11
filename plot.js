@@ -50,14 +50,14 @@ function toHierarchy(vpcs, subnets) {
     var cidr = vpc.CidrBlock;
     var cidrMask = cidr.split('/')[1];
     var size = Math.pow(2, (32 - cidrMask));
-    rootChildren.push({ 'name': vpc.VpcId, 'size': (size / 300), 'meta': vpc, 'children': [] });
+    rootChildren.push({ 'name': vpc.VpcId, 'meta': vpc, 'children': [] });
   };
 
   for (subnet of subnets) {
     for (child of rootChildren) {
       if (child.name == subnet.VpcId) {
         // subnets, on the other hand, belong to a specific VPC.
-        child.children.push({ 'name': subnet.SubnetId, 'size': (subnet.AvailableIpAddressCount / 200), 'meta': subnet, 'children': [] });
+        child.children.push({ 'name': subnet.SubnetId, 'meta': subnet, 'children': [] });
       }
     }
   };
@@ -65,18 +65,40 @@ function toHierarchy(vpcs, subnets) {
 }
 
 function drawGraph(tree) {
-  console.log("Plotting a graph with the contents of: ")
-  console.log(tree)
+  console.log("Plotting a graph with the contents of: ");
+  console.log(tree['children']);
 
-  vpcs = tree['children'];
+  // thanks SO - https://stackoverflow.com/questions/18147915/get-width-height-of-svg-element
+  var canvas = document.getElementById('canvas').getBoundingClientRect();
+  var width = canvas.width;
+  var vpcs = tree.children;
+  var vpcWidth = ( width / vpcs.length ) - 15; // or something along those lines
 
-  d3.select("#canvas").selectAll("div")
+  console.log("each vpc should be " + vpcWidth + "px wide")
+
+  // d3.select("#canvas").selectAll(".vpc")
+  var vpcNode = d3.select("#canvas").selectAll(".vpc")
   .data(vpcs)
   .enter()
-  .append("div")
+  .append("g")
   .attr("class", "vpc")
-  .attr("id", function(d) { return d.VpcId; })
-  .attr("title", function(d) { return d.CidrBlock; })
-  .html(function(d) { return d.Tags[0].Value })
+  .attr("id", function(d) { return d.meta.VpcId; })
+  .attr("title", function(d) { return d.meta.CidrBlock; })
+  // do something more robust in the line below to get name - "if a tag with key Name exists, then..."
+
+  vpcNode.append("text")
+  // per https://www.dashingd3js.com/svg-text-element
+  .html(function(d) { if (d.meta.Tags != null) { return d.meta.Tags[0].Value } else { return "unnamed vpc" } })
+  .attr("text-anchor", "middle")
+  .attr("x", function(d) { return (vpcs.indexOf(d) - 1) * (vpcWidth) }) // ugly but approximately functional!
+  .attr("y", -40)
+
+  vpcNode.append("rect")
+  .attr("width", vpcWidth / 2)
+  .attr("height", vpcWidth / 2)
+  .attr("x", function(d) { return (vpcs.indexOf(d) - 1) * (vpcWidth) }) // ugly but approximately functional!
+  .attr("y", -40)
+
+//  .attr("transform", function(d) { return "translate(" + d.vpcWidth + "," + d.vpcWidth + ")" })
 
 }
