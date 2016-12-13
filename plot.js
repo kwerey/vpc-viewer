@@ -3,37 +3,38 @@
 
 // vpcs.json should be the output of `aws ec2 describe-vpcs`
 // subnets.json should be the output of `aws ec2 describe-subnets`
-var tree = parse('data/vpcs.json', 'data/subnets.json')
+var tree = parseJson('data/vpcs.json', 'data/subnets.json');
 
-function loadJSON(file, callback) {   
-
-  var xobj = new XMLHttpRequest();
-      xobj.overrideMimeType("application/json");
-  xobj.open('GET', file, true);
-  xobj.onreadystatechange = function () {
-        if (xobj.readyState == 4 && xobj.status == "200") {
-          // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
-          callback(xobj.responseText);
-        }
-  };
-  xobj.send(null);  
+function loadJson(file, callback) {
+  return new Promise(function(resolve, reject) {
+    var request = new XMLHttpRequest();
+    request.open('GET', file, true);
+    request.responseType = 'json';
+    request.onload = function() {
+      if (request.status === 200) {
+        resolve(request.response);
+      } else {
+        reject(Error('Didn\'t load successfully; error code:' + request.statusText));
+      }
+    };
+    request.onerror = function() {
+        reject(Error('There was a network error.'));
+    };
+    request.send();
+  });
 }
 
-function parse(vpcs, subnets) {
-  loadJSON(vpcs, function(response) {
-    // Parse JSON string into object
-    var vpc_data = JSON.parse(response).Vpcs;
-    loadJSON(subnets, function(response) {
-      // Parse JSON string into object
-      var subnet_data = JSON.parse(response).Subnets;
-      var tree = toHierarchy(vpc_data, subnet_data);
-      // console.log(tree) // now works!
-      drawGraph(tree);
-    });
+function parseJson(vpcs, subnets) {
+  Promise.all([loadJson(vpcs), loadJson(subnets)]).then(function(responses) {
+    // responses contains the parsed JSON objects in the order of requests
+    var parsedJson = toHierarchy(responses[0].Vpcs, responses[1].Subnets);
+  }).catch(function(error) {
+      // do error processing here if any promise was rejected
   });
 }
 
 function toHierarchy(vpcs, subnets) {
+  console.log("To hierarcy:")
   console.log(vpcs)
   console.log(subnets)
   // Make root object
@@ -60,8 +61,9 @@ function toHierarchy(vpcs, subnets) {
         child.children.push({ 'name': subnet.SubnetId, 'meta': subnet, 'children': [] });
       }
     }
-  };
-  return root
+  }
+  console.log("Now we have a hierarchy. draw a graph!")
+  drawGraph(root);
 }
 
 function drawGraph(tree) {
