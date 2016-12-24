@@ -21,6 +21,20 @@
             "InstanceTenancy": "default",
             "DhcpOptionsId": "dopt-45118820",
             "CidrBlock": "10.0.0.0/22"
+        },
+        {
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "other-vpc"
+                }
+            ],
+            "State": "available",
+            "IsDefault": false,
+            "VpcId": "vpc-78ffe21c",
+            "InstanceTenancy": "default",
+            "DhcpOptionsId": "dopt-45318820",
+            "CidrBlock": "10.3.0.0/22"
         }
     ]
 }

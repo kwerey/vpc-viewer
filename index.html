@@ -10,12 +10,13 @@
   #canvas {
       display: block;
       margin: auto;
-      width: 80%;
-      height: 60%;
-      min-height: 500px;
       border-style: groove;
       border-color: #b7c0ce;
       background-color: #EDEFF2;
+      max-width: 80%;
+      max-height: 500px;
+      width: 800px;
+      height: 600px;
   }
 
   .title {
@@ -26,14 +27,14 @@
   .vpc {
     display: inline-block;
     margin: 20px;
-    width: 140px;
-    height: 140px;
     padding: 40px;
     background-color: #b7c0ce;
-    text-align: center;
-    font-family: Verdana, Geneva, sans-serif
   }
-      
+
+  .vpc-name {
+    font-weight: bold;
+  }
+
   rect {
     fill: rgb(31, 119, 180);
     fill-opacity: .25;
@@ -42,116 +43,19 @@
   }
 
   text {
-    font: 10px sans-serif;
-    text-anchor: middle;
+    text-align: center;
+    font-family: Verdana, Geneva, sans-serif
   }
 
 </style>
     </head>
+
     <body>
-    <h1 class="title">VPC visualiser!</h1> 
-    <div id="canvas">
-      <!-- this gets populated by the magic of d3! -->
-    </div> 
+    <h1 class="title">VPC visualiser!</h1>
 
-    <script type="text/javascript">
+    <svg id="canvas"></svg>
 
-    // var pack = d3.pack()
-    //     .size([diameter - 4, diameter - 4]);
-
-      /* do this with some logic to handle asynchronously  
-        // create a variable to populate with vpcs
-        var vpcs = [];
-
-        // populate the list.
-        // vpcs.json should contain the output of `aws ec2 describe-vpcs`.
-        d3.json("data/vpcs.json", function(data) {
-          // ^ check we can see the elements in the thing
-          for (i of data.Vpcs) {
-            vpc = {
-              VpcId: i.VpcId,
-              CidrBlock: i.CidrBlock
-            }
-            vpcs.push(vpc);
-          }
-        }); 
-
-        */
-
-var vpcs = [
-    {
-        "VpcId": "vpc-a01106c2",
-        "InstanceTenancy": "default",
-        "Tags": [
-            {
-                "Value": "MyVPC",
-                "Key": "Name"
-            }
-        ],
-        "State": "available",
-        "DhcpOptionsId": "dopt-7a8b9c2d",
-        "CidrBlock": "10.0.0.0/16",
-        "IsDefault": false
-    },
-    {
-        "VpcId": "vpc-b61106d4",
-        "InstanceTenancy": "dedicated",
-        "State": "available",
-        "Tags": [
-            {
-                "Value": "Other VPC",
-                "Key": "Name"
-            }
-        ],
-        "DhcpOptionsId": "dopt-97eb5efa",
-        "CidrBlock": "10.50.0.0/16",
-        "IsDefault": false
-    }
-]
-
-var subnets = [
-    {
-        "CidrBlock": "172.31.0.0/20",
-        "AvailabilityZone": "eu-west-1a",
-        "SubnetId": "subnet-c08a40a4",
-        "DefaultForAz": true,
-        "VpcId": "vpc-67ff1c03",
-        "AvailableIpAddressCount": 4091,
-        "State": "available",
-        "MapPublicIpOnLaunch": true
-    },
-    {
-        "CidrBlock": "172.31.32.0/20",
-        "AvailabilityZone": "eu-west-1c",
-        "SubnetId": "subnet-986e65c1",
-        "DefaultForAz": true,
-        "VpcId": "vpc-67ff1c03",
-        "AvailableIpAddressCount": 4091,
-        "State": "available",
-        "MapPublicIpOnLaunch": true
-    },
-    {
-        "CidrBlock": "172.31.16.0/20",
-        "AvailabilityZone": "eu-west-1b",
-        "SubnetId": "subnet-3a66954c",
-        "DefaultForAz": true,
-        "VpcId": "vpc-67ff1c03",
-        "AvailableIpAddressCount": 4090,
-        "State": "available",
-        "MapPublicIpOnLaunch": true
-    }
-]
-
-        console.log(vpcs);
-
-        d3.select("#canvas").selectAll("div")
-        .data(vpcs)
-        .enter()
-        .append("div")
-        .attr("class", "vpc")
-        .attr("id", function(d) { return d.VpcId; })
-        .attr("title", function(d) { return d.CidrBlock; })
-        .html(function(d) { return d.Tags[0].Value })
-    </script>
+    <!-- turns the JSON aws cli gives into a hierarchy d3 can use. -->
+    <script type="text/javascript" src="plot.js"></script>
     </body>
-</html>    
+</html>
